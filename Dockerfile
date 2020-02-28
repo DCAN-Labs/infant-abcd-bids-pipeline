@@ -17,7 +17,6 @@ COPY ["app", "/app"]
 RUN python3 -m pip install -r "/app/requirements.txt"
 
 # insert pipeline code
-COPY ["dcan_hcp_infants_v2.0", "/opt/pipeline"]
 RUN git clone -b 'v0.0.0' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
 
 # unless otherwise specified...

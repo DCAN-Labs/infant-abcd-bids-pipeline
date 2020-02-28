@@ -11,7 +11,7 @@ else
     tarfile=${pipeline}_${datestamp}.tar
 fi
 
-pushd /mnt/max/shared/code/internal/utilities/dcan-stack_dockerfiles/${pipeline}_dockerfile
+pushd /mnt/max/shared/code/internal/utilities/dcan-stack_dockerfiles/infant-abcd-bids-pipeline
 ./change_permissions.sh
 docker build . -t ${imagename}
 popd
