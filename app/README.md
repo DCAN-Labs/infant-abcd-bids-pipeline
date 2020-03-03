@@ -31,8 +31,8 @@ To call the Docker image:
 docker run --rm \
     -v <path to bids_dataset>:/bids_input:ro \
     -v <path to outputs>:/output \
-    -v <path to freesurfer license>:/license \
-    dcanlabs/infant-abcd-bids-pipeline /bids_input /output --freesurfer-license=/license [OPTIONS]
+    -v <path to freesurfer license.txt>:/opt/freesurfer/license.txt  \
+    dcanlabs/infant-abcd-bids-pipeline /bids_input /output [OPTIONS]
 ```
 
 #### Options
@@ -246,8 +246,8 @@ Running all subjects from a BIDS dataset:
 docker run --rm \
     -v <path to bids_dataset>:/bids_input:ro \
     -v <path to outputs>:/output \
-    -v <path to freesurfer license>:/license \
-    dcanlabs/infant-abcd-bids-pipeline /bids_input /output --freesurfer-license=/license
+    -v <path to freesurfer license.txt>:/opt/freesurfer/license.txt  \
+    dcanlabs/infant-abcd-bids-pipeline /bids_input /output
 ```
 
 Running a single subject from the dataset:
@@ -256,8 +256,8 @@ Running a single subject from the dataset:
 docker run --rm \
     -v <path to bids_dataset>:/bids_input:ro \
     -v <path to outputs>:/output \
-    -v <path to freesurfer license>:/license \
-    dcanlabs/infant-abcd-bids-pipeline /bids_input /output --freesurfer-license=/license --participant-label <label>
+    -v <path to freesurfer license.txt>:/opt/freesurfer/license.txt  \
+    dcanlabs/infant-abcd-bids-pipeline /bids_input /output --participant-label <label>
 ```
 
 Running with different templates:
@@ -270,9 +270,9 @@ mount them to the location at which the pileline expects them:
 docker run --rm \
     -v <path to bids_dataset>:/bids_input:ro \
     -v <path to outputs>:/output \
-    -v <path to freesurfer license>:/license \
+    -v <path to freesurfer license.txt>:/opt/freesurfer/license.txt  \
     -v <path to baby_templates folder>:/opt/pipeline/global/templates
-    dcanlabs/infant-abcd-bids-pipeline /bids_input /output --freesurfer-license=/license
+    dcanlabs/infant-abcd-bids-pipeline /bids_input /output
 ```
 
 Note that the mount flag "-v" follows "docker run", as it is a docker option,
