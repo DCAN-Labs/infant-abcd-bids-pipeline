@@ -675,7 +675,10 @@ class Stage(object):
                 err_log = os.path.join(log_dir,
                                        self.kwargs['fmriname'] + '.err')
                 cmdlist.append((cmd, out_log, err_log))
-            with mp.Pool(processes=ncpus) as pool:
+            # This path is used when we are in stages that make a thread for
+            # each task. Cap the number of processes as we keep running out of
+            # memory when we have too many tasks - KJS 20200303
+            with mp.Pool(processes=4) as pool:
                 result = pool.starmap(self.call, cmdlist)
         else:
             cmd = self.cmdline()
