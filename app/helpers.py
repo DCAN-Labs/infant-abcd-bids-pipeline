@@ -122,28 +122,59 @@ def set_functionals(layout, subject, sessions):
 
 
 def set_fieldmaps(layout, subject, sessions):
-    fmap = layout.get(subject=subject, session=sessions, datatype='fmap',
-                      extension=['nii.gz','nii'])
-    fmap_metadata = [layout.get_metadata(x.path) for x in fmap]
+    """
+    Returns dictionary of fieldmap (epi or magnitude) filepaths and associated
+    metadata. Only fieldmaps with 'IntendedFor' metadata are returned.
+    :param subject: participant label.
+    :param sessions: iterable of session labels.
+    """
+
+    fmap = []
+    fmap_metadata = []
+
+    # Currently, we only support distortion correction methods that use epi,
+    # magnitude, or phasediff field maps. (See fmap_types in ParameterSettings
+    # in pipelines.py.)
+    supported_fmaps = ['epi', 'magnitude', 'magnitude1', 'magnitude2',
+            'phasediff', 'phase1', 'phase2']
+    extensions = ['nii.gz','nii']
+    for bids_file in layout.get(subject=subject, session=sessions,
+            datatype='fmap', suffix=supported_fmaps, extension=extensions):
+
+        # Only include fmaps with non-empty 'IntendedFor' metadata.
+        meta = bids_file.get_metadata()
+        if 'IntendedFor' in meta.keys() and len(meta['IntendedFor']):
+            fmap.append(bids_file)
+            fmap_metadata.append(meta)
 
     # handle case spin echo
     types = [x.entities['suffix'] for x in fmap]
-    indices = [i for i, x in enumerate(types) if x == 'epi']
-    if len(indices):
-        # @TODO read IntendedFor field to map field maps to functionals.
-        positive = [i for i, x in enumerate(fmap_metadata) if '-' not in x[
-            'PhaseEncodingDirection']]
-        negative = [i for i, x in enumerate(fmap_metadata) if '-' in x[
-            'PhaseEncodingDirection']]
-        fmap = {'positive': [fmap[i].path for i in positive],
-                'negative': [fmap[i].path for i in negative]}
-        fmap_metadata = {
-            'positive': [fmap_metadata[i] for i in positive],
-            'negative': [fmap_metadata[i] for i in negative]}
-        # @TODO check that no orthogonal field maps were collected.
 
-    # handle case fieldmap # @TODO
-    elif 'magnitude' in fmap:
+    if epi in types:
+        if len(types) > 1:
+            print("""
+            The pipeline must choose distortion correction method based on the
+            type(s) of field maps available. Therefore, there cannot be more
+            than one type of field map. Please choose either spin echo (epi) or
+            magnitude/phasediff field maps, and make sure those json files have
+            'IntendedFor' values.
+            """)
+            raise Exception('Too many field map types found: %s' % types)
+        else:
+            # We have spin echo - and nothing else - so sort out its data.
+            positive = [i for i, x in enumerate(fmap_metadata) if '-' not in x[
+                'PhaseEncodingDirection']]
+            negative = [i for i, x in enumerate(fmap_metadata) if '-' in x[
+                'PhaseEncodingDirection']]
+            fmap = {'positive': [fmap[i].path for i in positive],
+                    'negative': [fmap[i].path for i in negative]}
+            fmap_metadata = {
+                    'positive': [fmap_metadata[i] for i in positive],
+                    'negative': [fmap_metadata[i] for i in negative]}
+
+    else:
+        # The other field map types found above will be filtered out in the
+        # implementation - see pipelines.py.
         pass
 
     spec = {
@@ -151,6 +182,7 @@ def set_fieldmaps(layout, subject, sessions):
         'fmap_metadata': fmap_metadata
     }
     return spec
+
 
 def get_readoutdir(metadata):
     """
@@ -275,6 +307,5 @@ def validate_config(bids_spec, anat_only):
     modes = bids_spec['types']
     assert ('T1w' in modes), 'T1w image not found!'
     assert ('bold' in modes) or anat_only, 'Must provide functional data or specify --ignore-func or --anat-only.'
-
 
 
