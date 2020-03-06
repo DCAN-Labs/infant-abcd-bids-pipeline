@@ -67,15 +67,14 @@ def read_bids_dataset(bids_input, subject_list=None, session_list=None, collect_
 
     for subject, sessions in subsess:
         # get relevant image datatypes
-        anat = set_anatomicals(layout, subject, sessions)
-        func = set_functionals(layout, subject, sessions)
-        fmap = set_fieldmaps(layout, subject, sessions)
+        anat, anat_types = set_anatomicals(layout, subject, sessions)
+        func, func_types = set_functionals(layout, subject, sessions)
+        fmap, fmap_types = set_fieldmaps(layout, subject, sessions)
 
         bids_data = {
             'subject': subject,
             'session': sessions if not collect_on_subject else None,
-            'types': layout.get(subject=subject, session=sessions,
-                                target='suffix', return_type='id')
+            'types': anat_types.union(func_types, fmap_types)
         }
         bids_data.update(anat)
         bids_data.update(func)
@@ -85,10 +84,12 @@ def read_bids_dataset(bids_input, subject_list=None, session_list=None, collect_
 
 
 def set_anatomicals(layout, subject, sessions):
+    types = set()
     t1ws = layout.get(subject=subject, session=sessions, datatype='anat',
                       suffix='T1w', extension=['nii.gz','nii'])
     if len(t1ws):
         t1w_metadata = layout.get_metadata(t1ws[0].path)
+        types.add('T1w')
     else:
         print("No T1w data was found for this subject.")
         t1w_metadata = None
@@ -98,15 +99,17 @@ def set_anatomicals(layout, subject, sessions):
                       suffix='T2w', extension=['nii.gz','nii'])
     if len(t2ws):
         t2w_metadata = layout.get_metadata(t2ws[0].path)
+        types.add('T2w')
     else:
         t2w_metadata = None
+
     spec = {
         't1w': [t.path for t in t1ws],
         't1w_metadata': t1w_metadata,
         't2w': [t.path for t in t2ws],
         't2w_metadata': t2w_metadata
     }
-    return spec
+    return spec, types
 
 
 def set_functionals(layout, subject, sessions):
@@ -114,11 +117,13 @@ def set_functionals(layout, subject, sessions):
                       suffix='bold', extension=['nii.gz','nii'])
     func_metadata = [layout.get_metadata(x.path) for x in func]
 
+    types = {f.entities['suffix'] for f in func}
+
     spec = {
         'func': [f.path for f in func],
         'func_metadata': func_metadata
     }
-    return spec
+    return spec, types
 
 
 def set_fieldmaps(layout, subject, sessions):
@@ -147,10 +152,10 @@ def set_fieldmaps(layout, subject, sessions):
             fmap.append(bids_file)
             fmap_metadata.append(meta)
 
-    # handle case spin echo
-    types = [x.entities['suffix'] for x in fmap]
+    types = {x.entities['suffix'] for x in fmap}
 
-    if epi in types:
+    # handle case spin echo
+    if 'epi' in types:
         if len(types) > 1:
             print("""
             The pipeline must choose distortion correction method based on the
@@ -177,11 +182,15 @@ def set_fieldmaps(layout, subject, sessions):
         # implementation - see pipelines.py.
         pass
 
+    # DEBUG
+    print ('There are %s entries in fmap.' % len(fmap))
+    print ('There are %s entries in fmap_metadata.' % len(fmap_metadata))
+
     spec = {
         'fmap': fmap,
         'fmap_metadata': fmap_metadata
     }
-    return spec
+    return spec, types
 
 
 def get_readoutdir(metadata):
