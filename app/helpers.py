@@ -84,6 +84,13 @@ def read_bids_dataset(bids_input, subject_list=None, session_list=None, collect_
 
 
 def set_anatomicals(layout, subject, sessions):
+    """
+    Returns dictionary of anatomical (T1w, T2w) filepaths and associated
+    metadata, and set of types.
+    :param subject: participant label.
+    :param sessions: iterable of session labels.
+    """
+
     types = set()
     t1ws = layout.get(subject=subject, session=sessions, datatype='anat',
                       suffix='T1w', extension=['nii.gz','nii'])
@@ -113,6 +120,12 @@ def set_anatomicals(layout, subject, sessions):
 
 
 def set_functionals(layout, subject, sessions):
+    """
+    Returns dictionary of functional (bold) filepaths and associated metadata,
+    and set of types.
+    :param subject: participant label.
+    :param sessions: iterable of session labels.
+    """
     func = layout.get(subject=subject, session=sessions, datatype='func',
                       suffix='bold', extension=['nii.gz','nii'])
     func_metadata = [layout.get_metadata(x.path) for x in func]
@@ -129,7 +142,8 @@ def set_functionals(layout, subject, sessions):
 def set_fieldmaps(layout, subject, sessions):
     """
     Returns dictionary of fieldmap (epi or magnitude) filepaths and associated
-    metadata. Only fieldmaps with 'IntendedFor' metadata are returned.
+    metadata. Only fieldmaps with 'IntendedFor' metadata are returned. Also
+    returns set of types.
     :param subject: participant label.
     :param sessions: iterable of session labels.
     """
@@ -178,13 +192,9 @@ def set_fieldmaps(layout, subject, sessions):
                     'negative': [fmap_metadata[i] for i in negative]}
 
     else:
-        # The other field map types found above will be filtered out in the
+        # The other field-map types found above will be filtered out in the
         # implementation - see pipelines.py.
         pass
-
-    # DEBUG
-    print ('There are %s entries in fmap.' % len(fmap))
-    print ('There are %s entries in fmap_metadata.' % len(fmap_metadata))
 
     spec = {
         'fmap': fmap,
