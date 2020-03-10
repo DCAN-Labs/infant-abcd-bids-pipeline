@@ -106,6 +106,7 @@ class ParameterSettings(object):
 
     # Values for FreeSurfer:
     max_cortical_thickness = 5
+    smoothing_iterations = 10
     # aseg file
     aseg = "DEFAULT"
 
@@ -343,6 +344,11 @@ class ParameterSettings(object):
             # Default method:
             self.jlf_method = "T1W"
 
+    def set_smoothing_iterations(self, value):
+        if value:
+            smoothing_iterations = value
+        else:
+            smoothing_iterations = 10 # FreeSurfer default.
 
     def set_subcortical_map_method(self, value):
         if value and value is not None:
@@ -807,6 +813,7 @@ class FreeSurfer(Stage):
            ' --t1nbrain={t1n_brain}' \
            ' --gca={gca}' \
            ' --maxThickness={max_cortical_thickness}' \
+           ' --smoothingIterations={smoothing_iterations}' \
            ' --normalizationMethod={norm_method}' \
            ' --printcom={printcom}'
 
