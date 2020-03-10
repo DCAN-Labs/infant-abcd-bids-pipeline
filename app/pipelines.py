@@ -678,7 +678,9 @@ class Stage(object):
             # This path is used when we are in stages that make a thread for
             # each task. Cap the number of processes as we keep running out of
             # memory when we have too many tasks - KJS 20200303
-            with mp.Pool(processes=8) as pool:
+            if ncpus > 6:
+                ncpus=6
+            with mp.Pool(processes=ncpus) as pool:
                 result = pool.starmap(self.call, cmdlist)
         else:
             cmd = self.cmdline()
