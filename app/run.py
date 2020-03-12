@@ -226,7 +226,7 @@ def generate_parser(parser=None):
         default=10,
         help='Tell FreeSurfer how many smoothing iterations to run. '
              'Default: 10 iterations. '
-    (
+    )
     parser.add_argument(
         '--subcortical-map-method', dest='subcortical_map_method',
         choices=['ROI_MAP', 'MNI_AFFINE'], default="ROI_MAP",
