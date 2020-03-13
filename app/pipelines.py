@@ -346,9 +346,11 @@ class ParameterSettings(object):
 
     def set_smoothing_iterations(self, value):
         if value:
-            smoothing_iterations = value
+            print('Set smoothing_iterations to %' % value)
+            self.smoothing_iterations = value
         else:
-            smoothing_iterations = 10 # FreeSurfer default.
+            print('Use default smoothing_iterations (10)')
+            self.smoothing_iterations = 10 # FreeSurfer default.
 
     def set_subcortical_map_method(self, value):
         if value and value is not None:
