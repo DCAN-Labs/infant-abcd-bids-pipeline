@@ -1,7 +1,7 @@
 #! /bin/bash
 set -x
 TAG=$1  # Optional. If given, the tag will be used in the image name *and* in the filenames.
-pipeline=dcan-infant-pipeline
+pipeline=infant-abcd-bids-pipeline
 datestamp=$( date +%Y%m%d )
 if [ -n "${TAG}" ] ; then
     imagename=dcanlabs/${pipeline}_${TAG}
