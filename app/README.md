@@ -49,6 +49,7 @@ usage: run.py [-h] [--aseg ASEG] [--atropos-mask-method {REFINE,CREATE,NONE}]
               [--multi-template-dir MULTI_TEMPLATE_DIR] [--no-crop]
               [--participant-label PARTICIPANT_LABEL [PARTICIPANT_LABEL ...]]
               [--session-id [SESSION_ID [SESSION_ID ...]]]
+              [--smoothing-iterations ITERATIONS]
               [--subcortical-map-method {ROI_MAP,MNI_AFFINE}]
               [--T1-brain-mask T1_BRAIN_MASK] [--t1-study-template HEAD BRAIN]
               [--t2-study-template HEAD BRAIN] [--anat-only]
@@ -146,6 +147,9 @@ optional arguments:
                         filter input dataset by session id. Default is all ids
                         found under the subject input directory(s). A session
                         id does not include "ses-"
+  --smoothing-iterations ITERATIONS
+                        Tell FreeSurfer how many smoothing iterations to run.
+                        Default: 10 iterations.
   --subcortical-map-method {ROI_MAP,MNI_AFFINE}
                         specify method to use to align subcorticals. Default:
                         ROI_MAP.
