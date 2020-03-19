@@ -106,6 +106,7 @@ class ParameterSettings(object):
 
     # Values for FreeSurfer:
     max_cortical_thickness = 5
+    smoothing_iterations = 10
     # aseg file
     aseg = "DEFAULT"
 
@@ -343,6 +344,11 @@ class ParameterSettings(object):
             # Default method:
             self.jlf_method = "T1W"
 
+    def set_smoothing_iterations(self, value):
+        if value:
+            self.smoothing_iterations = value
+        else:
+            self.smoothing_iterations = 10 # FreeSurfer default.
 
     def set_subcortical_map_method(self, value):
         if value and value is not None:
@@ -675,6 +681,11 @@ class Stage(object):
                 err_log = os.path.join(log_dir,
                                        self.kwargs['fmriname'] + '.err')
                 cmdlist.append((cmd, out_log, err_log))
+            # This path is used when we are in stages that make a thread for
+            # each task. Cap the number of processes as we keep running out of
+            # memory when we have too many tasks - KJS 20200303
+            if ncpus > 6:
+                ncpus=6
             with mp.Pool(processes=ncpus) as pool:
                 result = pool.starmap(self.call, cmdlist)
         else:
@@ -807,6 +818,7 @@ class FreeSurfer(Stage):
            ' --t1nbrain={t1n_brain}' \
            ' --gca={gca}' \
            ' --maxThickness={max_cortical_thickness}' \
+           ' --smoothingIterations={smoothing_iterations}' \
            ' --normalizationMethod={norm_method}' \
            ' --printcom={printcom}'
 
