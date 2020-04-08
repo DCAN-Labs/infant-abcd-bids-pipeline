@@ -328,3 +328,19 @@ def validate_config(bids_spec, anat_only):
     assert ('bold' in modes) or anat_only, 'Must provide functional data or specify --ignore-func or --anat-only.'
 
 
+def validate_license(freesurfer_license):
+    fshome = os.environ['FREESURFER_HOME']
+    license_txt = os.path.join(fshome, 'license.txt')
+    if freesurfer_license is None:
+        assert os.path.exists(license_txt), \
+            'freesurfer license.txt not located. You can provide a license ' \
+            'file using the --freesurfer-license <LICENSE> argument.'
+    elif os.path.normpath(license_txt) == os.path.normpath(freesurfer_license):
+        print('DEBUG:')
+        print('using first: %s' % os.path.normpath(license_txt))
+        print('using second: %s' % os.path.normpath(freesurfer_license))
+        pass
+    else:
+        import shutil
+        shutil.copy(freesurfer_license, license_txt)
+
