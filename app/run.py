@@ -62,6 +62,7 @@ def _cli():
         'no_crop': args.no_crop,
         'subject_list': args.subject_list,
         'session_list': args.session_list,
+        'smoothing_iterations': args.smoothing_iterations,
         'subcortical_map_method': args.subcortical_map_method,
         't1_brain_mask': args.t1_brain_mask,
         't1_study_template': args.t1_study_template,
@@ -233,6 +234,13 @@ def generate_parser(parser=None):
              'does not include "ses-"'
     )
     parser.add_argument(
+        '--smoothing-iterations', type=int, dest='smoothing_iterations',
+        metavar='ITERATIONS',
+        default=10,
+        help='Tell FreeSurfer how many smoothing iterations to run. '
+             'Default: 10 iterations. '
+    )
+    parser.add_argument(
         '--subcortical-map-method', dest='subcortical_map_method',
         choices=['ROI_MAP', 'MNI_AFFINE'], default="ROI_MAP",
         help='specify method to use to align subcorticals. '
@@ -367,6 +375,7 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
               hyper_norm_method=None,
               jlf_method=None, max_cortical_thickness=5, mc_frame=17,
               multi_masking_dir=None, multi_template_dir=None, no_crop=False,
+              smoothing_iterations=10,
               subcortical_map_method=None, t1_brain_mask=None,
               t1_study_template=None, t2_study_template=None,
               anat_only=False, cleaning_json=None, file_mapper_json=None,
@@ -391,6 +400,7 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
     :param multi_masking_dir: directory containing masks for JLF.
     :param multi_template_dir: directory containing templates for JLF.
     :param no_crop: allow user to turn off neck/shoulder cropping.
+    :param smoothing_iterations: specify number of smoothing iterations to FreeSurfer.
     :param subcortical_map_method: method by which to generate subcortical segmentations.
     :param t1_brain_mask: specify mask to use instead of letting PreFreeSurfer create it.
     :param t1_study_template (a tuple): templates for brain and head masking.
@@ -462,6 +472,8 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
 
         if max_cortical_thickness is not 5:
             session_spec.set_max_cortical_thickness(max_cortical_thickness)
+
+        session_spec.set_smoothing_iterations(smoothing_iterations)
 
         if subcortical_map_method is not None:
             session_spec.set_subcortical_map_method(subcortical_map_method)
