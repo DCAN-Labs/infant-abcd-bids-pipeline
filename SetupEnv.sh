@@ -16,7 +16,6 @@ export FREESURFER_HOME=/opt/freesurfer
 
 # Set up specific environment variables for the HCP Pipeline
 export HCPPIPEDIR=/opt/pipeline
-export SCRATCHDIR=/tmp
 
 export HCPPIPEDIR_Templates=${HCPPIPEDIR}/global/templates
 export HCPPIPEDIR_Config=${HCPPIPEDIR}/global/config
@@ -35,7 +34,8 @@ export MSMBin=${HCPPIPEDIR}/MSMBinaries
 
 
 # Set up DCAN Environment Variables
-export MCRROOT=/opt/mcr/v91
+export SCRATCHDIR=/tmp
+export MCRROOT=/opt/mcr/v92
 export DCANBOLDPROCDIR=/opt/dcan-tools/dcan_bold_proc
 export DCANBOLDPROCVER=DCANBOLDProc_v4.0.0
 export EXECSUMDIR=/opt/dcan-tools/executivesummary
