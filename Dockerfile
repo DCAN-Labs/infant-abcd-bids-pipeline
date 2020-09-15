@@ -18,7 +18,7 @@ RUN python3 -m pip install -r "/app/requirements.txt"
 
 # insert pipeline code
 ADD https://github.com/DCAN-Labs/dcan-infant-pipeline.git version.json
-RUN git clone -b 'v0.0.7' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
+RUN git clone -b 'v0.0.7b' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
 
 
 # unless otherwise specified...
