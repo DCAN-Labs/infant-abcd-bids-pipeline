@@ -1,4 +1,4 @@
-FROM dcanlabs/internal-tools:v1.0.0
+FROM dcanlabs/internal-tools:v1.0.1
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
         apt-utils \
@@ -18,7 +18,7 @@ RUN python3 -m pip install -r "/app/requirements.txt"
 
 # insert pipeline code
 ADD https://github.com/DCAN-Labs/dcan-infant-pipeline.git version.json
-RUN git clone -b 'v0.0.5' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
+RUN git clone -b 'v0.0.8' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
 
 
 # unless otherwise specified...
