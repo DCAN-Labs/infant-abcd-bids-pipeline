@@ -137,6 +137,9 @@ class ParameterSettings(object):
             self.t2samplespacing = get_realdwelltime(
                 self.bids_data['t2w_metadata'])
         else:
+            # The infant pipeline does not yet work without T2w...
+            raise NotImplementedError
+            # ...but when it does, do this.
             self.useT2 = 'false'
             self.t2w = []
             self.t2samplespacing = None
