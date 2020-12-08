@@ -138,6 +138,7 @@ class ParameterSettings(object):
                 self.bids_data['t2w_metadata'])
         else:
             # The infant pipeline does not yet work without T2w...
+            print('\nThe infant pipeline is not able to run without T2w.\n')
             raise NotImplementedError
             # ...but when it does, do this.
             self.useT2 = 'false'
