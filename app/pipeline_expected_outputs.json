@@ -3,6 +3,7 @@
     "{path}/T1w/T1w.nii.gz",
     "{path}/T1w/T1w_acpc.nii.gz",
     "{path}/T1w/xfms/acpc.mat",
+    "{path}/T1w/aseg_acpc.nii.gz",
     "{path}/T1w/T1w_acpc_brain.nii.gz",
     "{path}/T1w/T1w_acpc_brain_mask.nii.gz",
     "{path}/T1w/T1w_acpc_dc_brain.nii.gz",
