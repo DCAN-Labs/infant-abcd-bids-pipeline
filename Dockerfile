@@ -1,4 +1,4 @@
-FROM dcanlabs/internal-tools:dev
+FROM dcanlabs/internal-tools:v1.0.1
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
         apt-utils \
@@ -32,6 +32,7 @@ RUN mkdir /bids_input /output /atlases
 
 # Copy custom clean json.
 COPY ["./baby_BIDS_cleaning.json", "/opt/dcan-tools/customclean/"]
+COPY ["./baby_BIDS_no_session_cleaning.json", "/opt/dcan-tools/customclean/"]
 
 # setup ENTRYPOINT
 COPY ["./entrypoint.sh", "/entrypoint.sh"]
