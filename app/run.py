@@ -521,7 +521,7 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
         # Not sure why this is sent to boldproc rather than to spec, like
         # the other parameters above. But this is how abcd does it.
         # Just beware that the other stages do not know about this setting.
-        if bandstop_params is not None:
+        if boldproc is not None and bandstop_params is not None:
             boldproc.set_bandstop_filter(*bandstop_params)
 
         # Special runtime options
