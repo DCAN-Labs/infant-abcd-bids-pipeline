@@ -288,6 +288,12 @@ class ParameterSettings(object):
     def set_atropos_mask_method(self, value):
         self.atropos_mask_method = value
 
+    def set_bandstop_filter(self, lower_bound, upper_bound,
+                            filter_type='notch'):
+        self.motion_filter_type = filter_type
+        self.band_stop_min = lower_bound
+        self.band_stop_max = upper_bound
+
     def set_hypernormalization_method(self, norm_method):
         self.norm_method = norm_method
 
@@ -1028,12 +1034,6 @@ class DCANBOLDProcessing(Stage):
 
     def __init__(self, config):
         super(__class__, self).__init__(config)
-
-    def set_bandstop_filter(self, lower_bound, upper_bound,
-                            filter_type='notch'):
-        self.kwargs['motion_filter_type'] = filter_type
-        self.kwargs['band_stop_min'] = lower_bound
-        self.kwargs['band_stop_max'] = upper_bound
 
     def setup(self):
         """
