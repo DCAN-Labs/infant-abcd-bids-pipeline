@@ -32,6 +32,7 @@ RUN mkdir /bids_input /output /atlases
 
 # Copy custom clean json.
 COPY ["./baby_BIDS_cleaning.json", "/opt/dcan-tools/customclean/"]
+COPY ["./baby_BIDS_no_session_cleaning.json", "/opt/dcan-tools/customclean/"]
 
 # setup ENTRYPOINT
 COPY ["./entrypoint.sh", "/entrypoint.sh"]

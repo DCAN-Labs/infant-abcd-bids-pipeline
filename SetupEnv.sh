@@ -32,6 +32,9 @@ export HCPPIPEDIR_tfMRIAnalysis=${HCPPIPEDIR}/TaskfMRIAnalysis/scripts
 export MSMCONFIGDIR=${HCPPIPEDIR}/MSMConfig
 export MSMBin=${HCPPIPEDIR}/MSMBinaries
 
+# If not set to 1, ANTS may try to use a bunch of threads for which
+# we have not allocated cores. (Default is 5?)
+export ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS=1
 
 # Set up DCAN Environment Variables
 export SCRATCHDIR=/tmp

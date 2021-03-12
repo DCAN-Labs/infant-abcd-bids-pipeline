@@ -455,8 +455,8 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
         if atropos_range is not None:
             session_spec.set_atropos_range(*atropos_range)
 
-        # For some reason, bandstop is sent directly to the boldproc stage
-        # (after instantiation) instead of setting it in the session-spec.
+        if bandstop_params is not None:
+            session_spec.set_bandstop_filter(*bandstop_params)
 
         if dcmethod is not None:
             session_spec.set_dcmethod(dcmethod)
@@ -516,13 +516,6 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
         if file_mapper_json:
             fmap = FileMapper(session_spec, file_mapper_json)
             order.append(fmap)
-
-        # Set "special" boldproc user parameters.
-        # Not sure why this is sent to boldproc rather than to spec, like
-        # the other parameters above. But this is how abcd does it.
-        # Just beware that the other stages do not know about this setting.
-        if bandstop_params is not None:
-            boldproc.set_bandstop_filter(*bandstop_params)
 
         # Special runtime options
         if stages:

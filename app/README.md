@@ -340,6 +340,14 @@ The --stage option exists so you can restart the pipeline in the case that
 it terminated prematurely. The name of the stage will correspond exactly (in
 spelling and in case) to the name of the logs folder for the stage that failed.
 
+**NOTE** Not all arguments are used in all stages. For example, the bandstop
+min and max values are used for motion correction in the DCANBOLDProcessing
+stage, but not in any others. So, if you re-start the pipeline from
+ExectiveSummary with different bandstop values, the output will not change. Or
+if you run the pipeline multiple times with --anat-only, using different
+bandstop values will not change any results, since --anat-only runs only
+PreFreeSurfer, FreeSurfer, and PostFreeSurfer (anatomy) stages.
+
 #### Misc.
 The pipeline may take over 36 hours if using too few cores. Most fMRI processing
 can be done in parallel. It is recommended to use 10 cores and allow for at
