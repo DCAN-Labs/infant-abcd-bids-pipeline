@@ -1146,7 +1146,7 @@ def _call(cmd, out_log, err_log, num_threads=1):
     if num_threads > 1:
         # set parallel environment variables
         env['OMP_NUM_THREADS'] = str(num_threads)
-        env['ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS'] = 1 # str(num_threads)
+        env['ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS'] = str(1) # str(num_threads)
         if num_threads != 1:
             print('Keep ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS at 1 instead of %s.' % num_threads)
     with open(out_log, 'w') as out, open(err_log, 'w') as err:
