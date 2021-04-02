@@ -1127,10 +1127,10 @@ class FileMapper(Stage):
 
     script = '{FILEMAPPERDIR}/filemapper_wrapper.sh'
 
-    spec = ' --output-root={path}' \
-           ' --participant-label={subject}' \
-           ' --session-id={session}' \
-           ' --json={input_json}'
+    spec = '{subject} '\
+           '{session} '\
+           '{path}' \
+           '{input_json}'
 
     def __init__(self, config, input_json):
         super(__class__, self).__init__(config)
