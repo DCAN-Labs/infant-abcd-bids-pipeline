@@ -1125,7 +1125,7 @@ class CustomClean(Stage):
 
 class FileMapper(Stage):
 
-    script = '{FILEMAPPERDIR}/filemapper_wrapper.sh'
+    script = '{FILEMAPPERDIR}/BIDS_filemapper_wrapper.sh'
 
     spec = '{subject} '\
            '{session} '\
