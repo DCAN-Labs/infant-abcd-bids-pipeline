@@ -9,15 +9,15 @@
 #
 
 # Required
-SUB=$1            # subject number - no 'sub-'
-SES=$2            # session number - no 'ses-'
-ROOT=$3           # top of the subject's tree -- above SUB
+SUB=$1            # subject number - no 'sub-'.
+SES=$2            # session number - no 'ses-'.
+FILES=$3          # path to subject/session/files.
 TEMPLATE_JSON=$4  # json file to use as a template.
 shift 4
 
 PIPE=infant-abcd-bids-pipeline
 
-if [ -z "${SUB}" ] || [ -z "${SES}" ]  || [ -z "${ROOT}" ]  || [ -z "${TEMPLATE_JSON}" ] ; then
+if [ -z "${SUB}" ] || [ -z "${SES}" ]  || [ -z "${FILES}" ]  || [ -z "${TEMPLATE_JSON}" ] ; then
     echo "usage: $0 subject-id session-id path-to-processed-data path-to-template-json "
     exit 1
 fi
@@ -29,18 +29,25 @@ fi
 
 fmscript=/home/exacloud/lustre1/fnl_lab/code/internal/utilities/file-mapper/file_mapper_script.py
 
-subject=sub-${SUB}
-session=ses-${SES}
+# Set up strings to use for subject, session, paths etc.
 
-# Pipeline strings.
-files="${ROOT}/${subject}/${session}/files"      # path to get from root to files.
-results="MNINonLinear/Results"                   # path to get from files to results.
-if ! [ -d ${files}/${results} ]; then
-    echo "ERROR: Filemapper is unable to find directory ${files}/${results}. "
+results=${FILES}/MNINonLinear/Results
+if ! [ -d ${results} ]; then
+    echo "ERROR: Filemapper is unable to find directory ${results}. "
     exit 1
 fi
 
-# Destination (BIDS) strings.
+session_dir=$( dirname ${FILES} )
+session=$( basename ${session_dir} )
+subject_dir=$( dirname ${session_dir} )
+subject=$(basename ${subject_dir} )
+if [[ "${session}" == "ses-${SES}" ]] && [[ "${subject}" == "sub-${SUB}" ]] ; then
+    ROOT=$( dirname ${subject_dir} )
+else
+    echo There is a problem with the processed data. Expected path to end with sub-${SUB}/ses-${SES}/files.
+    echo The path provided does not match that pattern. Path is: ${FILES}.
+fi
+
 derivs="${ROOT}/derivatives/${PIPE}/${subject}/${session}"
 func="${derivs}/func"
 mkdir -p ${func}
@@ -59,7 +66,7 @@ mkdir -p ${func}
 # to put in source and destination files for every possible combination.
 
 shopt -s nullglob
-pushd ${files}/${results} > /dev/null
+pushd ${results} > /dev/null
 
 # Each fMRI (task/run combination) has a subdirectory in processed files, in
 # MNINonLinear/Results. We can use those subdirectories to get the names of the
@@ -137,7 +144,7 @@ shopt -u nullglob
 
 
 # Run the file-mapper application.
-CMD="${fmscript} ${TEMPLATE_JSON} -a copy -o -s -sp ${files} -dp ${ROOT} -t SUBJECT=${SUB},SESSION=${SES},PIPELINE=${PIPE}"
+CMD="${fmscript} ${TEMPLATE_JSON} -a copy -o -s -sp ${FILES} -dp ${ROOT} -t SUBJECT=${SUB},SESSION=${SES},PIPELINE=${PIPE}"
 set -x
 eval ${CMD}
 
