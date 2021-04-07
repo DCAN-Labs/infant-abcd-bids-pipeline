@@ -27,7 +27,7 @@ if [ -d ${scripts_dir} ] && [ -e ${scripts_dir}/SubmitterEnv.sh ] ; then
     source ${scripts_dir}/SubmitterEnv.sh
 fi
 
-fmscript=${FILEMAPPERDIR}/file-mapper.py
+fmscript=${FILEMAPPERDIR}/file_mapper_script.py
 CMD="${fmscript} ${TEMPLATE_JSON} -a copy -o -s -sp ${FILES} -dp ${ROOT} -t SUBJECT=${SUB},SESSION=${SES},PIPELINE=${PIPE}"
 set -x
 eval ${CMD}
