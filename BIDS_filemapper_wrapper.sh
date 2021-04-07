@@ -57,7 +57,6 @@ mkdir -p ${func}
 # to put in source and destination files for every possible combination.
 
 shopt -s nullglob
-pushd ${files}/${results} > /dev/null
 pushd ${results} > /dev/null
 
 # Each fMRI (task/run combination) has a subdirectory in processed files, in
@@ -144,7 +143,7 @@ if (( 0 == result )) ; then
     echo "FileMapper was successful."
 else
     echo "FileMapper had errors."
-    false
+    exit 1
 fi
 
 
