@@ -46,6 +46,7 @@ export MATLAB_PREFDIR=/opt/mcr
 export ABCDTASKPREPDIR=/opt/dcan-tools/ABCD_tfMRI
 export CUSTOMCLEANDIR=/opt/dcan-tools/customclean
 export CUSTOMCLEAN_JSON=${CUSTOMCLEANDIR}/baby_BIDS_cleaning.json
+export FILEMAPPERDIR=/opt/dcan-tools/filemapper
 
 
 # hacky solution for now...

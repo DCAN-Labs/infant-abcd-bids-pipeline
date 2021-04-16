@@ -1,4 +1,4 @@
-FROM dcanlabs/internal-tools:v1.0.1
+FROM dcanlabs/internal-tools:v1.0.2
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
         apt-utils \
@@ -18,8 +18,7 @@ RUN python3 -m pip install -r "/app/requirements.txt"
 
 # insert pipeline code
 ADD https://github.com/DCAN-Labs/dcan-infant-pipeline.git version.json
-#RUN git clone -b 'v0.0.9' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
-RUN git clone -b 'master' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
+RUN git clone -b 'v0.0.9' --single-branch --depth 1 https://github.com/DCAN-Labs/dcan-infant-pipeline.git /opt/pipeline
 
 
 # unless otherwise specified...
@@ -34,6 +33,11 @@ RUN mkdir /bids_input /output /atlases
 # Copy custom clean json.
 COPY ["./baby_BIDS_cleaning.json", "/opt/dcan-tools/customclean/"]
 COPY ["./baby_BIDS_no_session_cleaning.json", "/opt/dcan-tools/customclean/"]
+
+# Copy file mapper files.
+COPY ["./current_infant.json", "/opt/dcan-tools/filemapper/"]
+COPY ["./current_infant_no_session.json", "/opt/dcan-tools/filemapper/"]
+COPY ["./BIDS_filemapper_wrapper.sh", "/opt/dcan-tools/filemapper/"]
 
 # setup ENTRYPOINT
 COPY ["./entrypoint.sh", "/entrypoint.sh"]
