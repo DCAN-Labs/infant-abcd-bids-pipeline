@@ -1104,7 +1104,10 @@ class ExecutiveSummary(Stage):
 
     @property
     def args(self):
-        return self.spec.format(**self.kwargs)
+        # None to NONE
+        kw = {k: (v if v is not None else "NONE")
+              for k, v in self.kwargs.items()}
+        return self.spec.format(**kw)
 
 
 class CustomClean(Stage):
