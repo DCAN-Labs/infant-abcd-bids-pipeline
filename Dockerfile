@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
         unzip \
         wget
 
-RUN wget -O- http://neuro.debian.net/lists/bionic.us-ca.full | tee /etc/apt/sources.list.d/neurodebian.sources.list
+#RUN wget -O- http://neuro.debian.net/lists/bionic.us-ca.full | tee /etc/apt/sources.list.d/neurodebian.sources.list
 
 # Looks like the same command on both sides of the '||'. Am guessing that sometimes you have to do this a couple of times before it works?
 RUN apt-key adv --recv-keys --keyserver pgp.mit.edu 0xA5D32F012649A5A9 || apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xA5D32F012649A5A9
