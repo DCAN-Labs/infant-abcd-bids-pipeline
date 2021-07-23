@@ -32,6 +32,7 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
         unzip \
         wget
 
+#Apparently neurodebian is not needed.
 #RUN wget -O- http://neuro.debian.net/lists/bionic.us-ca.full | tee /etc/apt/sources.list.d/neurodebian.sources.list
 
 # Looks like the same command on both sides of the '||'. Am guessing that sometimes you have to do this a couple of times before it works?
@@ -193,8 +194,9 @@ RUN ln -s -f /lib/x86_64-linux-gnu/libz.so.1.2.11 /opt/workbench/libs_linux64/li
 # Fix libstdc++6 error
 RUN ln -sf /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.25 /opt/mcr/v92/sys/os/glnxa64/libstdc++.so.6
 
-#FROM dcanlabs/external-software:v0.0.3
-#FROM dcanlabs/internal-tools:latest
+#NOTE: The code above is built in the external-software image.
+#So, it is possible to build all of the code below by starting with:
+#FROM dcanlabs/external-software:<tag>
 
 RUN pip install setuptools wheel
 RUN pip install pyyaml numpy pillow pandas
@@ -218,6 +220,10 @@ RUN git clone -b v0.0.0 --single-branch --depth 1 https://github.com/DCAN-Labs/C
 
 # dcan file mapper
 RUN git clone -b v1.3.0 --single-branch --depth 1 https://github.com/DCAN-Labs/file-mapper.git filemapper
+
+#NOTE: The code above is built in the internal-tools image.
+#So, it is possible to build all of the code below by starting with:
+#FROM dcanlabs/internal-tools:<tag>
 
 COPY ["app", "/app"]
 RUN python3 -m pip install -r "/app/requirements.txt"
