@@ -1,4 +1,4 @@
-FROM dcanlabs/internal-tools:latest
+FROM dcanlabs/internal-tools:v1.0.2
 
 RUN apt-get update && apt-get install -yq --no-install-recommends \
         apt-utils \
