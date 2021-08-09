@@ -32,10 +32,8 @@ RUN apt-get update && apt-get install -yq --no-install-recommends \
         unzip \
         wget
 
-#Apparently neurodebian is not needed.
-#RUN wget -O- http://neuro.debian.net/lists/bionic.us-ca.full | tee /etc/apt/sources.list.d/neurodebian.sources.list
+RUN wget -O- http://neuro.debian.net/lists/bionic.us-ca.full | tee /etc/apt/sources.list.d/neurodebian.sources.list
 
-# Looks like the same command on both sides of the '||'. Am guessing that sometimes you have to do this a couple of times before it works?
 RUN apt-key adv --recv-keys --keyserver pgp.mit.edu 0xA5D32F012649A5A9 || apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 0xA5D32F012649A5A9
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
@@ -208,7 +206,7 @@ WORKDIR /opt/dcan-tools
 
 # dcan bold processing
 ADD https://github.com/DCAN-Labs/dcan_bold_processing.git version.json
-RUN git clone -b v4.0.6 --single-branch --depth 1 https://github.com/DCAN-Labs/dcan_bold_processing.git dcan_bold_proc
+RUN git clone -b v4.0.7 --single-branch --depth 1 https://github.com/DCAN-Labs/dcan_bold_processing.git dcan_bold_proc
 
 # dcan executive summary
 RUN git clone -b v2.2.10 --single-branch --depth 1 https://github.com/DCAN-Labs/ExecutiveSummary.git executivesummary
@@ -253,6 +251,7 @@ COPY ["./BIDS_filemapper_wrapper.sh", "/opt/dcan-tools/filemapper/"]
 # setup ENTRYPOINT
 COPY ["./entrypoint.sh", "/entrypoint.sh"]
 COPY ["./SetupEnv.sh", "/SetupEnv.sh"]
+RUN chmod -R 777 /SetupEnv.sh
 ENTRYPOINT ["/entrypoint.sh"]
 WORKDIR /
 CMD ["--help"]
