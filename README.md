@@ -8,7 +8,7 @@ Docker Hub to build the infant-abcd-bids-pipeline.
 When a release is made and Docker Hub's auto-build has completed, the Docker
 image can be loaded on your server as follows:
 ```
-docker pull dcanlabs/infant-abcd-bids-pipeline
+docker pull dcanumn/infant-abcd-bids-pipeline
 ```
 
 Optionally, a user can clone the repository and build the Docker image in place
