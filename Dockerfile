@@ -21,7 +21,6 @@ RUN pip install pyyaml numpy pillow pandas
 RUN apt-get update && apt-get install -yq --no-install-recommends python3-pip
 RUN pip3 install setuptools wheel
 
-
 COPY ["app", "/app"]
 RUN python3 -m pip install -r "/app/requirements.txt"
 
