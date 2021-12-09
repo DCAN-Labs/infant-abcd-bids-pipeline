@@ -761,7 +761,8 @@ class PreFreeSurfer(Stage):
            ' --atroposlabelmax={atropos_label_max}' \
            ' --jlfmethod={jlf_method}' \
            ' --t1brainmask={t1_brain_mask}' \
-           ' --crop={crop}'
+           ' --crop={crop}' \
+           ' --aseg={aseg}'
 
 
     def __init__(self, config):
