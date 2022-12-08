@@ -1,4 +1,4 @@
-FROM dcanumn/internal-tools:dbp_zero_padding
+FROM dcanumn/internal-tools:v1.0.9
 
 ARG DEBIAN_FRONTEND=noninteractive
 
