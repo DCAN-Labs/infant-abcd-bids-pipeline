@@ -1,4 +1,5 @@
-FROM dcanumn/internal-tools:v1.0.8
+FROM dcanumn/internal-tools:v1.0.9
+
 
 ARG DEBIAN_FRONTEND=noninteractive
 
