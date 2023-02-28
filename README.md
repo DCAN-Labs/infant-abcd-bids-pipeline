@@ -1,4 +1,7 @@
 # dcanumn/infant-abcd-bids-pipeline
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7683282.svg)](https://doi.org/10.5281/zenodo.7683282)
+
 A pipeline, based on abcd-hcp-pipeline, to process fMRI data for human infants.
 
 The repository contains the Dockerfile, entrypoint.sh, SetupEnv.sh and the app
