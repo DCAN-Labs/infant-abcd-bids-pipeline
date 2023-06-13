@@ -24,7 +24,7 @@ NeuroImage, 62:782-90, 2012
 [6] Avants, BB et al. The Insight ToolKit image registration framework. Front
 Neuroinform. 2014 Apr 28;8:44. doi: 10.3389/fninf.2014.00044. eCollection 2014.
 """
-__version__ = "0.0.22"
+__version__ = "0.0.23"
 
 import argparse
 import os
@@ -576,6 +576,7 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
 
         # run pipelines
         for stage in order:
+            print('infant-abcd-bids-pipeline v%s' % __version__ )
             print('running %s' % stage.__class__.__name__, flush=True)
             print(stage, flush=True)
             stage.run(ncpus)
