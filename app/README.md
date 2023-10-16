@@ -97,10 +97,10 @@ optional arguments:
                         range to be used for atropos labeling. Defaults: 4 and
                         5.
   --bandstop LOWER UPPER
-                        parameters for motion regressor band-stop filter. It
-                        is recommended for the boundaries to match the inter-
-                        quartile range for participant group respiratory rate
-                        (bpm), or to match bids physio data directly [3].
+                        parameters for motion regressor band-stop filter in bpm
+                        (not Hz). It is recommended for the boundaries to match
+                        the inter-quartile range for participant group respiratory
+                        rate (bpm), or to match bids physio data directly [3].
                         These parameters are highly recommended for data
                         acquired with a frequency of approx. 1 Hz or more
                         (TR<=1.0). Default: no filter
