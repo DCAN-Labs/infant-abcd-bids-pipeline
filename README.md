@@ -4,6 +4,8 @@
 
 A pipeline, based on abcd-hcp-pipeline, to process fMRI data for human infants.
 
+This pipeline leverages the (The DCAN Labs Infant Processing Pipeline)[https://github.com/DCAN-Labs/dcan-infant-pipeline].
+
 The repository contains the Dockerfile, entrypoint.sh, SetupEnv.sh and the app
 folder containing the BIDS App source. All of this is needed in order for
 Docker Hub to build the infant-abcd-bids-pipeline.
