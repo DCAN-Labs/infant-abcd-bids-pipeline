@@ -24,7 +24,7 @@ NeuroImage, 62:782-90, 2012
 [6] Avants, BB et al. The Insight ToolKit image registration framework. Front
 Neuroinform. 2014 Apr 28;8:44. doi: 10.3389/fninf.2014.00044. eCollection 2014.
 """
-__version__ = "0.0.22"
+__version__ = "0.0.23"
 
 import argparse
 import os
