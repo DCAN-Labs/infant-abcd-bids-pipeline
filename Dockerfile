@@ -52,7 +52,6 @@ COPY ["./BIDS_filemapper_wrapper.sh", "/opt/dcan-tools/filemapper/"]
 COPY ["./entrypoint.sh", "/entrypoint.sh"]
 COPY ["./SetupEnv.sh", "/SetupEnv.sh"]
 RUN chmod -R 777 /SetupEnv.sh
-RUN chmod -R 777 /opt/mcr
 ENTRYPOINT ["/entrypoint.sh"]
 WORKDIR /
 CMD ["--help"]
