@@ -92,10 +92,15 @@ class ParameterSettings(object):
     upper_bpf = 0.080
     # motion regressor bandstop filter parameters
     motion_filter_type = 'notch'
+    # new as of 0.2.0, with default settings DCANBOLDProcessing now applies
+    # one repetition of filtfilt instead of two, use --legacy-motion-filter
+    # for filter behavior consistent with prior versions 
     motion_filter_order = 4
     band_stop_min = None
     band_stop_max = None
     motion_filter_option = 5
+    legacy_motion_filter = ''
+    no_gsr = ''
     # seconds to omit from beginning of scan
     skip_seconds = 5
     # cont frames
@@ -213,6 +218,10 @@ class ParameterSettings(object):
         self.logs = os.path.join(output_directory, 'logs')
         self.subject = self.bids_data['subject']
         self.session = self.bids_data['session']
+
+        # additional DCANBOLDProcessing options
+        self.legacy_motion_filter = ""
+        self.no_gsr = ""
 
         # @ input files @ #
         session_root = '/'.join(self.t1w[0].split('/')[:-2])
@@ -1023,10 +1032,12 @@ class DCANBOLDProcessing(Stage):
            ' --filter-order={filter_order}' \
            ' --lower-bpf={lower_bpf}' \
            ' --upper-bpf={upper_bpf}' \
+           ' {no_gsr}' \
            ' --motion-filter-type={motion_filter_type}' \
            ' --physio={physio}' \
            ' --motion-filter-option={motion_filter_option}' \
            ' --motion-filter-order={motion_filter_order}' \
+           ' {legacy_motion_filter}' \
            ' --band-stop-min={band_stop_min}' \
            ' --band-stop-max={band_stop_max}' \
            ' --brain-radius={brain_radius}' \
@@ -1035,6 +1046,16 @@ class DCANBOLDProcessing(Stage):
 
     def __init__(self, config):
         super(__class__, self).__init__(config)
+
+    def set_legacy_motion_filter(self, value):
+        print(value)
+        if value:
+            self.kwargs['legacy_motion_filter'] = '--legacy-motion-filter'
+
+    def set_no_gsr(self, value):
+        print(value)
+        if value:
+            self.kwargs['no_gsr'] = '--no-gsr'
 
     def setup(self):
         """
