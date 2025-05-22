@@ -50,7 +50,9 @@ def _cli():
         'aseg': args.aseg,
         'atropos_mask_method': args.atropos_mask_method,
         'atropos_range': args.atropos_range,
+        'no_gsr': args.no_gsr,
         'bandstop_params': args.bandstop,
+        'legacy_motion_filter': args.legacy_motion_filter,
         'dcmethod': args.dcmethod,
         'freesurfer_license': args.freesurfer_license,
         'hyper_norm_method': args.hyper_norm_method,
@@ -135,6 +137,11 @@ def generate_parser(parser=None):
              'Defaults: 4 and 5. '
     )
     parser.add_argument(
+        '--no-gsr', action='store_true', dest='no_gsr',
+        help='Disable global signal regression in DCANBOLDProcessing stage.'
+             'Default: False'
+    )
+    parser.add_argument(
         '--bandstop', type=float, nargs=2,
         metavar=('LOWER', 'UPPER'),
         help='parameters for motion regressor band-stop filter. It is '
@@ -143,6 +150,13 @@ def generate_parser(parser=None):
              'bids physio data directly [3].  These parameters are highly '
              'recommended for data acquired with a frequency of approx. 1 Hz '
              'or more (TR<=1.0). Default: no filter'
+    )
+    parser.add_argument(
+        '--legacy-motion-filter', action='store_true', dest='legacy_motion_filter',
+        help='enable this to make band-stop motion filter behavior match that of '
+             'infant-abcd-bids-pipeline 0.0.2x. Specifically, if using bidirectional '
+             'filter (filtfilt), the number of filter repetitions will be doubled '
+             'compared to running without this option. ' 
     )
     parser.add_argument(
         '--dcmethod',
@@ -383,7 +397,8 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
               t1_study_template=None, t2_study_template=None,
               anat_only=False, cleaning_json=None, file_mapper_json=None,
               check_only=False, ignore_expected_outputs=False, ncpus=1,
-              print_commands=False, stages=None):
+              print_commands=False, stages=None, no_gsr=False,
+              legacy_motion_filter=False):
     """
     main application interface
     :param bids_dir: input bids dataset see "helpers.read_bids_dataset" for more info.
@@ -415,7 +430,9 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
     :param ignore_expected_outputs: ignore the expected outputs from each stage.
     :param ncpus: number of cores for parallelized processing.
     :param print_commands: print commands but don't execute them.
-    :param stages: only run a subset of stages.
+    :param stages: only run a subset of stages
+    :param no_gsr: disables global signal regression in DCANBOLDProcessing stage
+    :param legacy_motion_filter: enable for bandstop motion filter consistent with 0.1.x
     :return:
     """
     if not check_only and not print_commands:
@@ -460,6 +477,12 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
 
         if bandstop_params is not None:
             session_spec.set_bandstop_filter(*bandstop_params)
+
+        if legacy_motion_filter:
+            boldproc.set_legacy_motion_filter(legacy_motion_filter)
+        
+        if no_gsr:
+            boldproc.set_no_gsr(no_gsr)
 
         if dcmethod is not None:
             session_spec.set_dcmethod(dcmethod)
