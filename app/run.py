@@ -388,8 +388,8 @@ def generate_parser(parser=None):
 
 def interface(bids_dir, output_dir, subject_list=None, session_list=None,
               aseg="DEFAULT", atropos_mask_method=None, atropos_range=None,
-              bandstop_params=None, dcmethod=None, freesurfer_license=None,
-              hyper_norm_method=None,
+              no_gsr=False, bandstop_params=None, legacy_motion_filter=False,
+              dcmethod=None, freesurfer_license=None, hyper_norm_method=None,
               jlf_method=None, max_cortical_thickness=5, mc_frame=17,
               multi_masking_dir=None, multi_template_dir=None, no_crop=False,
               smoothing_iterations=10,
@@ -397,8 +397,7 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
               t1_study_template=None, t2_study_template=None,
               anat_only=False, cleaning_json=None, file_mapper_json=None,
               check_only=False, ignore_expected_outputs=False, ncpus=1,
-              print_commands=False, stages=None, no_gsr=False,
-              legacy_motion_filter=False):
+              print_commands=False, stages=None):
     """
     main application interface
     :param bids_dir: input bids dataset see "helpers.read_bids_dataset" for more info.
@@ -408,7 +407,9 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
     :param aseg: path to aseg file to be used in FreeSurfer.
     :param atropos_mask_method: refine the mask, create a new mask, or leave as-is.
     :param atropos_range: tuple of lower and upper bounds for ANTs/Atropos labels.
+    :param no_gsr: disables global signal regression in DCANBOLDProcessing stage
     :param bandstop_params: tuple of lower and upper bounds for stop-band filter.
+    :param legacy_motion_filter: enable for bandstop motion filter consistent with 0.0.x
     :param dcmethod: which method will be used for distortion correction.
     :param freesurfer_license: path to license to use FreeSurfer.
     :param hyper_norm_method: which method will be used for hyper-normalization step.
@@ -431,8 +432,6 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
     :param ncpus: number of cores for parallelized processing.
     :param print_commands: print commands but don't execute them.
     :param stages: only run a subset of stages
-    :param no_gsr: disables global signal regression in DCANBOLDProcessing stage
-    :param legacy_motion_filter: enable for bandstop motion filter consistent with 0.1.x
     :return:
     """
     if not check_only and not print_commands:
