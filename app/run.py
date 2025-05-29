@@ -478,10 +478,10 @@ def interface(bids_dir, output_dir, subject_list=None, session_list=None,
             session_spec.set_bandstop_filter(*bandstop_params)
 
         if legacy_motion_filter:
-            boldproc.set_legacy_motion_filter(legacy_motion_filter)
+            session_spec.set_legacy_motion_filter(legacy_motion_filter)
         
         if no_gsr:
-            boldproc.set_no_gsr(no_gsr)
+            session_spec.set_no_gsr(no_gsr)
 
         if dcmethod is not None:
             session_spec.set_dcmethod(dcmethod)
