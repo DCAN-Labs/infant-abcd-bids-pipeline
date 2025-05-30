@@ -392,6 +392,14 @@ class ParameterSettings(object):
             # Will make the correct path when FreeSurfer is initialized.
             self.aseg = "DEFAULT"
 
+    def set_legacy_motion_filter(self, value):
+        print(value)
+        if value:
+            self.legacy_motion_filter = '--legacy-motion-filter'
+
+    def set_no_gsr(self, value):
+        if value:
+            self.no_gsr = '--no-gsr'
 
 class Status(object):
     """Status provides and updates node status information.
@@ -1046,16 +1054,6 @@ class DCANBOLDProcessing(Stage):
 
     def __init__(self, config):
         super(__class__, self).__init__(config)
-
-    def set_legacy_motion_filter(self, value):
-        print(value)
-        if value:
-            self.kwargs['legacy_motion_filter'] = '--legacy-motion-filter'
-
-    def set_no_gsr(self, value):
-        print(value)
-        if value:
-            self.kwargs['no_gsr'] = '--no-gsr'
 
     def setup(self):
         """
